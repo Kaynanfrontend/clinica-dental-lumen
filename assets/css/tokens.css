@@ -1,0 +1,306 @@
+/* =====================================================================
+   Modelo clínica dental — tokens de design
+   Fonte única da verdade: cor, tipo, espaço, forma e movimento.
+   O tema vem do config.js → <html data-tema="calma | premium | cercana">.
+   Contraste WCAG (calculado com ferramentas/cor.js) anotado ao lado de cada uso de texto.
+   ===================================================================== */
+
+/* ---------- Fontes auto-hospedadas (Google Fonts / OFL, subset latino) ----------
+   Eixos que não usamos foram congelados para os arquivos ficarem leves
+   (Newsreader opsz 48 · Fraunces opsz 72 + SOFT 100 · Nunito Sans opsz 12).
+   O navegador só baixa as fontes do tema em uso.
+   Os "Fallback" ajustam fontes do sistema às métricas das web fonts
+   (medidas com fontTools) para a troca não mover o layout (CLS ≈ 0). */
+@font-face {
+  font-family: "Newsreader";
+  src: url("../fonts/newsreader-latin.woff2") format("woff2");
+  font-weight: 300 600; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("../fonts/newsreader-italic-latin.woff2") format("woff2");
+  font-weight: 300 600; font-style: italic; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Manrope";
+  src: url("../fonts/manrope-latin.woff2") format("woff2");
+  font-weight: 200 800; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/cormorant-latin.woff2") format("woff2");
+  font-weight: 300 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("../fonts/cormorant-italic-latin.woff2") format("woff2");
+  font-weight: 300 700; font-style: italic; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter Tight";
+  src: url("../fonts/inter-tight-latin.woff2") format("woff2");
+  font-weight: 100 900; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-latin.woff2") format("woff2");
+  font-weight: 400 700; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("../fonts/fraunces-italic-latin.woff2") format("woff2");
+  font-weight: 400 700; font-style: italic; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Nunito Sans";
+  src: url("../fonts/nunito-sans-latin.woff2") format("woff2");
+  font-weight: 200 1000; font-style: normal; font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* Fallbacks com métricas ajustadas (títulos sobre Georgia, texto sobre Arial) */
+@font-face { font-family: "Newsreader Fallback"; src: local("Georgia"); size-adjust: 97.7%; ascent-override: 75.2%; descent-override: 27.1%; line-gap-override: 0%; }
+@font-face { font-family: "Cormorant Fallback"; src: local("Georgia"); size-adjust: 87.5%; ascent-override: 105.6%; descent-override: 32.8%; line-gap-override: 0%; }
+@font-face { font-family: "Fraunces Fallback"; src: local("Georgia"); size-adjust: 104.2%; ascent-override: 93.9%; descent-override: 24.5%; line-gap-override: 0%; }
+@font-face { font-family: "Manrope Fallback"; src: local("Arial"), local("ArialMT"), local("Helvetica"); size-adjust: 98.6%; ascent-override: 108.1%; descent-override: 30.4%; line-gap-override: 0%; }
+@font-face { font-family: "Inter Tight Fallback"; src: local("Arial"), local("ArialMT"), local("Helvetica"); size-adjust: 95.8%; ascent-override: 101.1%; descent-override: 25.2%; line-gap-override: 0%; }
+@font-face { font-family: "Nunito Sans Fallback"; src: local("Arial"), local("ArialMT"), local("Helvetica"); size-adjust: 97.2%; ascent-override: 104%; descent-override: 36.3%; line-gap-override: 0%; }
+
+/* =====================================================================
+   1. Tokens comuns aos 3 temas
+   ===================================================================== */
+:root {
+  /* ---------- Tipografia: escala fluida 360px → 1440px ----------
+     Cada tema multiplica os títulos por --escala-titulos (fontes com olho
+     pequeno, como a Cormorant, precisam de um corpo maior para "pesar" igual). */
+  --step--1: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem); /* 13→14 */
+  --step-0:  clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);      /* 16→18 */
+  --step-1:  clamp(1.1875rem, 1.125rem + 0.2778vw, 1.375rem);  /* 19→22 */
+  --step-2:  clamp(1.4375rem, 1.3333rem + 0.463vw, 1.75rem);   /* 23→28 */
+  --step-3:  clamp(1.75rem, 1.5833rem + 0.7407vw, 2.25rem);    /* 28→36 */
+  --step-4:  clamp(2.125rem, 1.8333rem + 1.2963vw, 3rem);      /* 34→48 */
+  --step-5:  clamp(2.5rem, 2rem + 2.2222vw, 4rem);             /* 40→64 */
+  --step-6:  clamp(2.875rem, 1.9583rem + 4.0741vw, 5.625rem);  /* 46→90 */
+
+  --lh-texto: 1.6;
+  --medida: 62ch;          /* largura máxima de leitura */
+
+  /* ---------- Espaço: grade de 8px ---------- */
+  --s-0: 4px;
+  --s-1: 8px;
+  --s-2: 16px;
+  --s-3: 24px;
+  --s-4: 32px;
+  --s-5: 48px;
+  --s-6: 64px;
+  --s-7: 96px;
+  --s-8: 128px;
+  --s-9: 192px;
+
+  --margen: clamp(20px, 5vw, 64px);       /* respiro lateral da página */
+  --gutter: clamp(16px, 2vw, 24px);
+  --seccion: clamp(72px, 8.5vw, 136px);    /* distância entre seções */
+  --ancho: 1320px;
+
+  /* ---------- Movimento (mesmas curvas da musgo) ---------- */
+  --e-out:    cubic-bezier(0.22, 1, 0.36, 1);   /* chegada calma */
+  --e-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --t-rapido: 160ms;
+  --t-medio:  320ms;
+  --t-lento:  640ms;
+  --revelar-y: 24px;                            /* quanto o conteúdo "sobe" ao aparecer */
+}
+
+/* =====================================================================
+   2. Temas
+   Cada tema define: cores (--c-*), fontes (--f-*), forma dos títulos,
+   raios (--r-*), estilo dos botões (--btn-*) e detalhes (--detalle-*).
+   ===================================================================== */
+
+/* ---------- CALMA · claro, arejado: areia + azul-acinzentado ---------- */
+:root,
+[data-tema="calma"] {
+  --c-fondo:       #F6F2EC;  /* areia clara — fundo principal */
+  --c-superficie:  #FDFBF7;  /* cartões */
+  --c-alterno:     #ECE5D9;  /* seções alternadas */
+  --c-texto:       #1D2930;  /* 13.34:1 fondo · 11.88:1 alterno */
+  --c-suave:       #4C5961;  /* texto secundário · 6.47:1 fondo · 5.77:1 alterno */
+  --c-acento:      #3F5F73;  /* azul-acinzentado: botões, detalhes */
+  --c-sobre-acento:#FDFBF7;  /* texto do botão · 6.56:1 */
+  --c-tinta:       #3F5F73;  /* acento como texto/link · 6.08:1 fondo · 5.42:1 alterno */
+  --c-decor:       #C9B79C;  /* areia escura: SÓ decoração (nunca texto) */
+  --c-oscuro:      #1D2930;  /* rodapé, faixa demo */
+  --c-sobre-oscuro:#F6F2EC;  /* 13.34:1 */
+  --c-suave-oscuro:#B7C3CA;  /* 8.27:1 */
+  --c-tinta-oscuro:#A9C2D2;  /* 8.03:1 */
+  --c-linea:        rgb(29 41 48 / 0.14);
+  --c-linea-fuerte: rgb(29 41 48 / 0.30);
+  --c-foco:        #3F5F73;
+  --c-seleccion:   #D9E3EA;
+
+  --f-titulo: "Newsreader", "Newsreader Fallback", Georgia, serif;
+  --f-texto:  "Manrope", "Manrope Fallback", Arial, sans-serif;
+  --escala-titulos: 1;
+  --peso-titulo: 400;
+  --peso-titulo-fuerte: 500;
+  --tr-titulo: -0.02em;
+  --lh-titulo: 1.04;
+  --enfasis-estilo: italic;   /* palavra destacada no título: itálico */
+  --peso-texto-fuerte: 600;
+
+  --r-s: 10px;
+  --r-m: 18px;
+  --r-l: 28px;
+  --r-foto: 28px;
+
+  --btn-radio: 999px;          /* cápsula */
+  --btn-alto: 52px;
+  --btn-pad: 0 28px;
+  --btn-peso: 500;
+  --btn-mayus: none;
+  --btn-tracking: 0;
+  --btn-talla: var(--step-0);
+  --btn-borde: 1px;
+  --btn-sombra: none;
+
+  --detalle-linea: 1px;        /* fios finos */
+
+  /* ritmo (Etapa 3): calma = respiração lenta e suave */
+  --heroi-dur: 1.15s;
+  --heroi-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+  --heroi-paso: 65ms;
+  --heroi-foto-dur: 2.2s;
+  --heroi-foto-de: scale(1.05);
+  --brilho: color-mix(in srgb, var(--c-tinta) 42%, #FFFFFF);   /* luz = a própria cor do tema, clareada (branco puro sumiria no fundo claro) */
+  --sonrisa-traco: 0.05em;
+  --sombra-tarjeta: 0 1px 2px rgb(29 41 48 / 0.04), 0 12px 32px -12px rgb(29 41 48 / 0.12);
+}
+
+/* ---------- PREMIUM · escuro elegante: grafite/verde profundo + dourado ---------- */
+[data-tema="premium"] {
+  --c-fondo:       #121617;  /* grafite */
+  --c-superficie:  #1A2021;
+  --c-alterno:     #0F2420;  /* verde profundo */
+  --c-texto:       #EEE9DF;  /* 15.06:1 fondo · 13.42:1 alterno */
+  --c-suave:       #A8B0A9;  /* 8.20:1 fondo · 7.30:1 alterno */
+  --c-acento:      #C8A96A;  /* dourado suave */
+  --c-sobre-acento:#121617;  /* 8.10:1 */
+  --c-tinta:       #D2B67C;  /* 9.30:1 fondo · 8.29:1 alterno */
+  --c-decor:       #6E5A33;  /* dourado apagado: SÓ decoração */
+  --c-oscuro:      #0A0D0D;
+  --c-sobre-oscuro:#EEE9DF;  /* 16.13:1 */
+  --c-suave-oscuro:#A8B0A9;  /* 8.78:1 */
+  --c-tinta-oscuro:#D2B67C;  /* 9.96:1 */
+  --c-linea:        rgb(238 233 223 / 0.12);
+  --c-linea-fuerte: rgb(238 233 223 / 0.28);
+  --c-foco:        #D2B67C;
+  --c-seleccion:   #3A3220;
+
+  --f-titulo: "Cormorant Garamond", "Cormorant Fallback", Georgia, serif;
+  --f-texto:  "Inter Tight", "Inter Tight Fallback", Arial, sans-serif;
+  --escala-titulos: 1.14;
+  --peso-titulo: 500;
+  --peso-titulo-fuerte: 600;
+  --tr-titulo: -0.01em;
+  --lh-titulo: 1;
+  --enfasis-estilo: italic;
+  --peso-texto-fuerte: 500;
+
+  --r-s: 0px;
+  --r-m: 2px;
+  --r-l: 2px;
+  --r-foto: 0px;               /* fotos com canto reto, como impressão */
+
+  --btn-radio: 0px;
+  --btn-alto: 54px;
+  --btn-pad: 0 32px;
+  --btn-peso: 500;
+  --btn-mayus: uppercase;      /* letras espaçadas, discretas */
+  --btn-tracking: 0.16em;
+  --btn-talla: var(--step--1);
+  --btn-borde: 1px;
+  --btn-sombra: none;
+
+  --detalle-linea: 1px;
+  --sombra-tarjeta: none;      /* no escuro, profundidade vem do fio dourado */
+
+  /* ritmo: premium = cinema (curvas longas, foto que "assenta" devagar) */
+  --heroi-dur: 1.1s;
+  --heroi-ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --heroi-paso: 55ms;
+  --heroi-foto-dur: 2.8s;
+  --heroi-foto-de: scale(1.14);
+  --brilho: #FFF4D6;
+  --sonrisa-traco: 0.035em;
+  color-scheme: dark;
+}
+
+/* ---------- CERCANA · quente e familiar: terracota + creme ---------- */
+[data-tema="cercana"] {
+  --c-fondo:       #FBF4EA;  /* creme */
+  --c-superficie:  #FFFCF7;
+  --c-alterno:     #F4E4D0;  /* pêssego claro */
+  --c-texto:       #3B2A21;  /* café · 12.49:1 fondo · 10.95:1 alterno */
+  --c-suave:       #6A5045;  /* 6.76:1 fondo · 5.92:1 alterno */
+  --c-acento:      #A84E2B;  /* terracota */
+  --c-sobre-acento:#FFFCF7;  /* 5.41:1 */
+  --c-tinta:       #9A4524;  /* 5.92:1 fondo · 5.18:1 alterno */
+  --c-decor:       #E3A867;  /* ocre: SÓ decoração */
+  --c-oscuro:      #3B2A21;
+  --c-sobre-oscuro:#FBF4EA;  /* 12.49:1 */
+  --c-suave-oscuro:#D9C3B4;  /* 8.07:1 */
+  --c-tinta-oscuro:#F0A989;  /* 6.98:1 */
+  --c-linea:        rgb(59 42 33 / 0.14);
+  --c-linea-fuerte: rgb(59 42 33 / 0.30);
+  --c-foco:        #9A4524;
+  --c-seleccion:   #F6D3BC;
+
+  --f-titulo: "Fraunces", "Fraunces Fallback", Georgia, serif;
+  --f-texto:  "Nunito Sans", "Nunito Sans Fallback", Arial, sans-serif;
+  --escala-titulos: 0.96;
+  --peso-titulo: 600;
+  --peso-titulo-fuerte: 700;
+  --tr-titulo: -0.025em;
+  --lh-titulo: 1.06;
+  --enfasis-estilo: italic;
+  --peso-texto-fuerte: 700;
+
+  --r-s: 12px;
+  --r-m: 22px;
+  --r-l: 36px;
+  --r-foto: 36px;
+
+  --btn-radio: 16px;           /* "macio", nem cápsula nem reto */
+  --btn-alto: 54px;
+  --btn-pad: 0 28px;
+  --btn-peso: 700;
+  --btn-mayus: none;
+  --btn-tracking: 0;
+  --btn-talla: var(--step-0);
+  --btn-borde: 2px;
+  --btn-sombra: 0 3px 0 rgb(59 42 33 / 0.22);  /* botão "de apertar" */
+
+  --detalle-linea: 2px;
+
+  /* ritmo: cercana = leve e saltitante (pequeno "quique" no fim) */
+  --heroi-dur: 0.75s;
+  --heroi-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --heroi-paso: 40ms;
+  --heroi-foto-dur: 1.1s;
+  --heroi-foto-de: scale(0.9) rotate(-3deg);
+  --brilho: color-mix(in srgb, var(--c-tinta) 42%, #FFFFFF);
+  --sonrisa-traco: 0.07em;
+  --sombra-tarjeta: 0 2px 0 rgb(59 42 33 / 0.06), 0 18px 40px -20px rgb(120 60 30 / 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --t-rapido: 0ms; --t-medio: 0ms; --t-lento: 0ms; --revelar-y: 0px; }
+}

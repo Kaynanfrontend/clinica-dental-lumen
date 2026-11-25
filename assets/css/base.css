@@ -1,0 +1,284 @@
+/* =====================================================================
+   Modelo clínica dental — base + componentes
+   Mobile-first. Depende de tokens.css. Nada aqui tem cor fixa:
+   tudo vem das variáveis do tema (--c-*), então os 3 temas usam o mesmo CSS.
+   ===================================================================== */
+
+/* ---------- Reset enxuto ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  min-height: 100vh;
+  background: var(--c-fondo);
+  color: var(--c-texto);
+  font-family: var(--f-texto);
+  font-size: var(--step-0);
+  line-height: var(--lh-texto);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+img, svg, video { display: block; max-width: 100%; height: auto; }
+[hidden] { display: none !important; }
+button, input, textarea, select { font: inherit; color: inherit; }
+button { cursor: pointer; background: none; border: 0; padding: 0; }
+a { color: inherit; }
+ul[role="list"], ol[role="list"] { list-style: none; padding: 0; }
+h1, h2, h3, h4 {
+  font-family: var(--f-titulo);
+  font-weight: var(--peso-titulo);
+  line-height: var(--lh-titulo);
+  letter-spacing: var(--tr-titulo);
+  text-wrap: balance;
+}
+p { text-wrap: pretty; }
+strong, b { font-weight: var(--peso-texto-fuerte); }
+
+::selection { background: var(--c-seleccion); color: var(--c-texto); }
+
+/* Foco visível em tudo (teclado) */
+:focus-visible { outline: 2px solid var(--c-foco); outline-offset: 3px; border-radius: 2px; }
+
+.sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.salto-contenido {
+  position: absolute; left: var(--s-2); top: -100px; z-index: 100;
+  padding: var(--s-1) var(--s-2);
+  background: var(--c-oscuro); color: var(--c-sobre-oscuro);
+  border-radius: var(--r-s);
+}
+.salto-contenido:focus { top: var(--s-2); }
+
+/* ---------- Layout ---------- */
+.contenedor {
+  width: 100%;
+  max-width: var(--ancho);
+  margin-inline: auto;
+  padding-inline: var(--margen);
+}
+.reticula {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+@media (min-width: 900px) {
+  .reticula { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+}
+.seccion { padding-block: var(--seccion); }
+.seccion--alterna { background: var(--c-alterno); }
+.seccion--oscura {
+  background: var(--c-oscuro);
+  color: var(--c-sobre-oscuro);
+  --c-texto: var(--c-sobre-oscuro);
+  --c-suave: var(--c-suave-oscuro);
+  --c-tinta: var(--c-tinta-oscuro);
+  --c-foco: var(--c-tinta-oscuro);
+  --c-linea: rgb(255 255 255 / 0.14);
+  --c-linea-fuerte: rgb(255 255 255 / 0.32);
+}
+
+/* ---------- Tipografia ----------
+   Títulos usam a fonte do tema e são multiplicados por --escala-titulos. */
+.t-display { font-size: calc(var(--step-6) * var(--escala-titulos)); line-height: calc(var(--lh-titulo) - 0.04); letter-spacing: calc(var(--tr-titulo) - 0.01em); }
+.t-h1 { font-size: calc(var(--step-5) * var(--escala-titulos)); }
+.t-h2 { font-size: calc(var(--step-4) * var(--escala-titulos)); }
+.t-h3 { font-size: calc(var(--step-3) * var(--escala-titulos)); line-height: 1.12; }
+.t-h4 { font-size: calc(var(--step-2) * var(--escala-titulos)); line-height: 1.2; letter-spacing: -0.01em; }
+.t-display, .t-h1, .t-h2, .t-h3, .t-h4 { font-family: var(--f-titulo); font-weight: var(--peso-titulo); }
+.t-lead { font-size: var(--step-1); line-height: 1.5; max-width: 40ch; color: var(--c-suave); }
+.t-texto { font-size: var(--step-0); max-width: var(--medida); }
+.t-nota { font-size: var(--step--1); color: var(--c-suave); }
+.t-suave { color: var(--c-suave); }
+
+/* Palavra destacada dentro de um título: <em>sonrisa</em> */
+.t-display em, .t-h1 em, .t-h2 em, .t-h3 em {
+  font-style: var(--enfasis-estilo);
+  color: var(--c-tinta);
+}
+
+/* Rótulo pequeno acima dos títulos ("Tratamientos", "Equipo"…) */
+.rotulo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  font-family: var(--f-texto);
+  font-size: var(--step--1);
+  font-weight: var(--peso-texto-fuerte);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: var(--c-tinta);
+}
+.rotulo::before {
+  content: "";
+  width: 24px;
+  height: var(--detalle-linea);
+  background: currentColor;
+}
+
+/* ---------- Botões ----------
+   A forma muda por tema (cápsula · reto com letras espaçadas · macio com sombra),
+   tudo pelas variáveis --btn-* de tokens.css. */
+.btn {
+  --btn-fondo: transparent;
+  --btn-color: var(--c-texto);
+  --btn-linea: var(--c-linea-fuerte);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-1);
+  min-height: var(--btn-alto);
+  padding: var(--btn-pad);
+  border: var(--btn-borde) solid var(--btn-linea);
+  border-radius: var(--btn-radio);
+  background: var(--btn-fondo);
+  color: var(--btn-color);
+  font-family: var(--f-texto);
+  font-size: var(--btn-talla);
+  font-weight: var(--btn-peso);
+  letter-spacing: var(--btn-tracking);
+  text-transform: var(--btn-mayus);
+  text-decoration: none;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow: var(--btn-sombra);
+  transition:
+    background-color var(--t-medio) var(--e-out),
+    border-color var(--t-medio) var(--e-out),
+    color var(--t-medio) var(--e-out),
+    transform var(--t-rapido) var(--e-out),
+    box-shadow var(--t-rapido) var(--e-out);
+}
+.btn svg { width: 1.15em; height: 1.15em; flex: none; }
+.btn .btn__flecha { transition: transform var(--t-medio) var(--e-out); }
+.btn:hover .btn__flecha, .btn.is-hover .btn__flecha { transform: translateX(4px); }
+.btn:active, .btn.is-activo { transform: translateY(1px) scale(0.985); box-shadow: none; }
+
+.btn--primario {
+  --btn-fondo: var(--c-acento);
+  --btn-color: var(--c-sobre-acento);
+  --btn-linea: var(--c-acento);
+}
+.btn--primario:hover, .btn--primario.is-hover {
+  --btn-fondo: color-mix(in srgb, var(--c-acento) 86%, var(--c-texto));
+  --btn-linea: color-mix(in srgb, var(--c-acento) 86%, var(--c-texto));
+}
+.btn--secundario:hover, .btn--secundario.is-hover {
+  --btn-fondo: var(--c-texto);
+  --btn-color: var(--c-fondo);
+  --btn-linea: var(--c-texto);
+}
+/* premium: o primário vira contorno dourado ao passar o mouse (mais discreto que escurecer) */
+[data-tema="premium"] .btn--primario:hover, [data-tema="premium"] .btn--primario.is-hover {
+  --btn-fondo: transparent;
+  --btn-color: var(--c-tinta);
+  --btn-linea: var(--c-acento);
+}
+.btn--bloque { width: 100%; }
+
+.btn:disabled, .btn[aria-disabled="true"] {
+  --btn-fondo: transparent;
+  --btn-color: var(--c-suave);
+  --btn-linea: var(--c-linea);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+.btn.is-foco { outline: 2px solid var(--c-foco); outline-offset: 3px; }
+
+/* ---------- Links de texto ---------- */
+.enlace {
+  color: var(--c-tinta);
+  font-weight: var(--peso-texto-fuerte);
+  text-decoration: underline;
+  text-decoration-thickness: var(--detalle-linea);
+  text-underline-offset: 0.25em;
+  transition: text-underline-offset var(--t-medio) var(--e-out);
+}
+.enlace:hover { text-underline-offset: 0.4em; }
+
+/* ---------- Cartões ---------- */
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  background: var(--c-superficie);
+  border: var(--detalle-linea) solid var(--c-linea);
+  border-radius: var(--r-l);
+  box-shadow: var(--sombra-tarjeta);
+  overflow: hidden;
+}
+.tarjeta__cuerpo { display: grid; gap: var(--s-1); padding: var(--s-3); }
+.tarjeta__foto { aspect-ratio: 4 / 3; overflow: hidden; }
+.tarjeta__foto img { width: 100%; height: 100%; object-fit: cover; transition: transform var(--t-lento) var(--e-out); }
+.tarjeta:hover .tarjeta__foto img { transform: scale(1.03); }
+[data-tema="premium"] .tarjeta { border-color: var(--c-linea-fuerte); }
+
+/* Foto "solta" (fora de cartão): o raio acompanha o tema */
+.foto { border-radius: var(--r-foto); overflow: hidden; background: var(--c-alterno); }
+.foto img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Etiquetas (preço, "infantil"…) ---------- */
+.etiqueta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid var(--c-linea-fuerte);
+  border-radius: var(--btn-radio);
+  font-size: var(--step--1);
+  font-weight: var(--peso-texto-fuerte);
+  color: var(--c-suave);
+}
+
+/* ---------- Campos de formulário ---------- */
+.campo { display: grid; gap: var(--s-1); }
+.campo__etiqueta { font-size: var(--step--1); font-weight: var(--peso-texto-fuerte); }
+.campo__control {
+  width: 100%;
+  min-height: 52px;
+  padding: 12px 16px;
+  background: var(--c-superficie);
+  border: 1px solid var(--c-linea-fuerte);
+  border-radius: var(--r-s);
+  transition: border-color var(--t-rapido) var(--e-out), box-shadow var(--t-rapido) var(--e-out);
+}
+.campo__control::placeholder { color: var(--c-suave); opacity: 1; }
+.campo__control:hover { border-color: var(--c-suave); }
+.campo__control:focus-visible {
+  outline: none;
+  border-color: var(--c-foco);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-foco) 25%, transparent);
+}
+.campo__ayuda { font-size: var(--step--1); color: var(--c-suave); }
+
+/* ---------- Faixa "Demo · clínica de ejemplo" (config: demo: true) ---------- */
+.aviso-demo {
+  position: relative;
+  z-index: 60;
+  background: var(--c-oscuro);
+  color: var(--c-sobre-oscuro);
+  font-size: var(--step--1);
+  line-height: 1.4;
+  text-align: center;
+  padding: 8px var(--margen);
+}
+.aviso-demo strong { color: var(--c-tinta-oscuro); }
+
+/* ---------- Assinatura "Web: musgo. estudio" (config: assinatura: true) ---------- */
+.firma {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35em;
+  font-size: var(--step--1);
+  color: var(--c-suave);
+  text-decoration: none;
+}
+.firma__marca { color: var(--c-texto); font-weight: var(--peso-texto-fuerte); }
+.firma:hover .firma__marca { text-decoration: underline; text-underline-offset: 0.25em; }
+
+/* ---------- Revelar ao rolar ----------
+   Sem JS o conteúdo SEMPRE aparece. As bibliotecas de animação (GSAP + Lenis)
+   só carregam DEPOIS da página aparecer; aí o app.js esconde apenas o que ainda
+   está abaixo da tela e revela ao rolar. Se algo falhar, nada fica escondido. */
